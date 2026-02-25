@@ -137,9 +137,9 @@ bool Eluna::OnAuraProc(Aura* aura, ProcEventInfo& procInfo)
 
 uint32 Eluna::OnCheckCast(Spell* pSpell)
 {
-    START_HOOK_WITH_RETVAL(SPELL_EVENT_ON_CHECK_CAST, pSpell, SPELL_FAILED_SUCCESS);
+    START_HOOK_WITH_RETVAL(SPELL_EVENT_ON_CHECK_CAST, pSpell, SPELL_CAST_OK);
     HookPush(pSpell);
-    return static_cast<uint32>(CallAllFunctionsInt(binding, key, int32(SPELL_FAILED_SUCCESS)));
+    return static_cast<uint32>(CallAllFunctionsInt(binding, key, int32(SPELL_CAST_OK)));
 }
 
 void Eluna::OnBeforeCast(Spell* pSpell)
