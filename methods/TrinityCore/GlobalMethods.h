@@ -3089,6 +3089,22 @@ namespace LuaGlobalFunctions
         return 0;
     }
 
+    /**
+     * Returns the [ElunaSpellInfo] for the given spell ID, or nil if the spell does not exist.
+     *
+     * @param uint32 spellId : the spell ID to look up
+     * @return [ElunaSpellInfo] spellInfo
+     */
+    int GetSpellInfo(Eluna* E)
+    {
+        uint32 spellId = E->CHECKVAL<uint32>(1);
+        if (!sSpellMgr->GetSpellInfo(spellId))
+            return luaL_argerror(E->L, 1, "invalid spell id");
+        ElunaSpellInfo info(spellId);
+        E->Push(&info);
+        return 1;
+    }
+
     ElunaRegister<> GlobalMethods[] =
     {
         // Hooks
@@ -3167,6 +3183,7 @@ namespace LuaGlobalFunctions
         { "PrintError", &LuaGlobalFunctions::PrintError },
         { "PrintDebug", &LuaGlobalFunctions::PrintDebug },
         { "GetActiveGameEvents", &LuaGlobalFunctions::GetActiveGameEvents },
+        { "GetSpellInfo", &LuaGlobalFunctions::GetSpellInfo },
 
         // Boolean
         { "IsCompatibilityMode", &LuaGlobalFunctions::IsCompatibilityMode },
