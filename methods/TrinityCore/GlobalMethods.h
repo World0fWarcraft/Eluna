@@ -1204,10 +1204,32 @@ namespace LuaGlobalFunctions
      * In Multistate mode (default), events are either registered to the WORLD state (-1) or the MAP states (map ID). These events will only ever trigger on their respective state.
      *
      * In Compatibility mode, all events are registered to the WORLD state (-1).
-     * 
+     *
      * @table
      * @columns [ID, Event, State, Parameters, Comment]
-     * @values [1, ON_CAST, "MAP", <event: number, spell: Spell, skipCheck: boolean>, ""]
+     * @values [1,  ON_CAST, "MAP", <event: number, spell: Spell, skipCheck: boolean>, ""]
+     * @values [2,  ON_AURA_APPLICATION, "MAP", <event: number, aura: Aura, auraEff: AuraEffect, target: Unit, mode: number, apply: boolean>, "Can return true to prevent application"]
+     * @values [3,  ON_DISPEL, "MAP", <event: number, aura: Aura, dispeller: WorldObject, dispellerSpellId: number, removedCharges: number>, ""]
+     * @values [4,  ON_PERIODIC_TICK, "MAP", <event: number, aura: Aura, auraEff: AuraEffect, target: Unit>, "Can return true to prevent tick"]
+     * @values [5,  ON_PERIODIC_UPDATE, "MAP", <event: number, aura: Aura, auraEff: AuraEffect>, ""]
+     * @values [6,  ON_AURA_CALC_AMOUNT, "MAP", <event: number, aura: Aura, auraEff: AuraEffect, amount: number, canBeRecalculated: boolean>, "Can return amount, canBeRecalculated to override"]
+     * @values [7,  ON_CALC_PERIODIC, "MAP", <event: number, aura: Aura, auraEff: AuraEffect, isPeriodic: boolean, amplitude: number>, "Can return isPeriodic, amplitude to override"]
+     * @values [8,  ON_CHECK_PROC, "MAP", <event: number, aura: Aura, procInfo: ElunaProcInfo>, "Can return false to prevent proc"]
+     * @values [9,  ON_PROC, "MAP", <event: number, aura: Aura, procInfo: ElunaProcInfo>, "Can return true to prevent default proc handling"]
+     * @values [10, ON_CHECK_CAST, "MAP", <event: number, spell: Spell>, "Can return SpellCastResult to override cast result"]
+     * @values [11, ON_BEFORE_CAST, "MAP", <event: number, spell: Spell>, ""]
+     * @values [12, ON_AFTER_CAST, "MAP", <event: number, spell: Spell>, ""]
+     * @values [13, ON_OBJECT_AREA_TARGET, "MAP", <event: number, spell: Spell, effIndex: number, targets: table>, "Modify targets table in place to change targets"]
+     * @values [14, ON_OBJECT_TARGET, "MAP", <event: number, spell: Spell, effIndex: number, target: WorldObject>, ""]
+     * @values [15, ON_DEST_TARGET, "MAP", <event: number, spell: Spell, effIndex: number, mapId: number, x: number, y: number, z: number, orientation: number>, "Can return mapId, x, y, z, orientation to override destination"]
+     * @values [16, ON_EFFECT_LAUNCH, "MAP", <event: number, spell: Spell, effIndex: number, mode: number>, "Can return true to prevent default launch handling"]
+     * @values [17, ON_EFFECT_LAUNCH_TARGET, "MAP", <event: number, spell: Spell, effIndex: number, mode: number>, "Can return true to prevent default launch target handling"]
+     * @values [18, ON_EFFECT_CALC_ABSORB, "MAP", <event: number, spell: Spell, attacker: Unit, victim: Unit, damage: number, absorb: number, resist: number, block: number, schoolMask: number, damageType: number, attackType: number, hitMask: number, resistAmount: number, absorbAmount: number>, "Can return resistAmount, absorbAmount to override"]
+     * @values [19, ON_EFFECT_HIT, "MAP", <event: number, spell: Spell, effIndex: number, mode: number>, "Can return true to prevent default hit handling"]
+     * @values [20, ON_BEFORE_HIT, "MAP", <event: number, spell: Spell, missInfo: number>, ""]
+     * @values [21, ON_EFFECT_HIT_TARGET, "MAP", <event: number, spell: Spell, effIndex: number, mode: number>, "Can return true to prevent default hit target handling"]
+     * @values [22, ON_HIT, "MAP", <event: number, spell: Spell>, ""]
+     * @values [23, ON_AFTER_HIT, "MAP", <event: number, spell: Spell>, ""]
      *
      * @proto cancel = (entry, event, function)
      * @proto cancel = (entry, event, function, shots)
@@ -3090,10 +3112,10 @@ namespace LuaGlobalFunctions
     }
 
     /**
-     * Returns the [ElunaSpellInfo] for the given spell ID, or nil if the spell does not exist.
+     * Returns the [SpellInfo] for the given spell ID, or nil if the spell does not exist.
      *
      * @param uint32 spellId : the spell ID to look up
-     * @return [ElunaSpellInfo] spellInfo
+     * @return [SpellInfo] spellInfo
      */
     int GetSpellInfo(Eluna* E)
     {
