@@ -115,21 +115,18 @@ void Eluna::ReplaceArgument(T value, int index)
 template<typename... Outs, size_t... Is>
 void Eluna::ApplyMultiReturnsImpl(int r, std::tuple<Outs&...>& outs, const std::array<int, sizeof...(Outs)>& indices, std::index_sequence<Is...>)
 {
-    ((
-        [&] {
-            using T = std::remove_reference_t<std::tuple_element_t<Is, std::tuple<Outs&...>>>;
-            const int idx = r + static_cast<int>(Is);
+    ( [&] {
+        using T = std::remove_reference_t<std::tuple_element_t<Is, std::tuple<Outs&...>>>;
+        const int idx = r + static_cast<int>(Is);
 
-            if (LuaRet<T>::Is(L, idx))
-            {
-                std::get<Is>(outs) = LuaRet<T>::Get(this, L, idx);
+        if (LuaRet<T>::Is(L, idx))
+        {
+            std::get<Is>(outs) = LuaRet<T>::Get(this, L, idx);
 
-                if (indices[Is] != 0)
-                    ReplaceArgument(std::get<Is>(outs), indices[Is]);
-            }
-        }(),
-            0
-            ), ...);
+            if (indices[Is] != 0)
+                ReplaceArgument(std::get<Is>(outs), indices[Is]);
+        }
+    }(), ... );
 }
 
 /*
