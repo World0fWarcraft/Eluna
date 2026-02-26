@@ -282,9 +282,9 @@ namespace LuaSpell
     }
 
     /**
-     * Returns `true` if the [Spell] was triggered by the given [ElunaSpellInfo], `false` otherwise.
+     * Returns `true` if the [Spell] was triggered by the given [SpellInfo], `false` otherwise.
      *
-     * @param [ElunaSpellInfo] spellInfo : the aura spell info to check against
+     * @param [SpellInfo] spellInfo : the aura spell info to check against
      * @return bool isTriggeredByAura
      */
     int IsTriggeredByAura(Eluna* E, Spell* spell)
